@@ -1,13 +1,22 @@
 <script setup>
+    import { ref } from 'vue';
+    import { useStore } from 'vuex';
 
+    const store = useStore();
+    const inputText = ref("");
+
+    const searchWeatherByCityName = () => {
+        store.commit('onSearchCity', inputText);
+        store.dispatch('getWeather');
+    }
 </script>
 
 <template>
     <div class="search-bar">
-        <form>
+        <form @submit.prevent>
             <div class="form-group">
-                <input type="search" placeholder="지역을 입력해주세요">
-                <button>
+                <input @input="inputText = $event.target.value" type="search" placeholder="지역을 입력해주세요">
+                <button @click="searchWeatherByCityName" >
                     <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
                 </button>
             </div>
@@ -32,6 +41,7 @@
             padding: 1em 0;
             font-size: 18px;
             outline: none;
+            font-size: 14px;
             }
             button {
             background: transparent;

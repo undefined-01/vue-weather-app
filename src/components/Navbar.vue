@@ -4,7 +4,7 @@
 
 <template>
     <nav class="navbar">
-        <button class="toggle">
+        <button class="toggle" @click="$store.commit('toggleButton')">
             <font-awesome-icon class="icon" :icon="['fas', 'bars-staggered']"/>
         </button>
     </nav>
@@ -19,14 +19,13 @@
         justify-content: end;
 
         button {
-            border: none;
-            background: transparent;
-            cursor: pointer;
+        border: none;
+        background: transparent;
+        cursor: pointer;
         }
-
         .icon {
-            color: #333;
-            font-size: 24px;
+        color: #333;
+        font-size: 24px;
         }
     }
 </style>
