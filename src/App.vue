@@ -3,24 +3,22 @@
   import MainComp from "./components/MaimComp.vue";
   import About from "./components/About.vue";
   import { ref, onMounted } from "vue";
-  import { useStore } from 'vuex';
+
+  import { useStore } from './store/store.js';
+  import { storeToRefs } from "pinia";
 
   const store = useStore();
-
+  const { weatherData, toggle } = storeToRefs(store);
+  
   onMounted(() => {
-    store.dispatch('getWeather');
+    store.getWeather();
   });
 
-  const onSearchCity = (city) => {
-    weatherData.value.city = city;
-    getWeather();
-  }
 </script>
 
 <template>
-  <button @click="store.dispatch('getWeather')">getWeather</button>
   <Navbar />
-  <div v-if="!$store.state.toggle">
+  <div v-if="!toggle">
     <MainComp />
   </div>
   <div v-else>

@@ -1,9 +1,7 @@
-import { createStore } from 'vuex';
+import { defineStore } from 'pinia';
 
-export default createStore({
-    state: {
-        // initail state
-        count: 0,
+export const useStore = defineStore('main', {
+    state: () => ({
         weatherData: {
             icon: "icon",
             temp: 0,
@@ -12,38 +10,36 @@ export default createStore({
             city: "seoul",
         },
         toggle: false,
-    },
-    mutations: {
-        // mutations
-        addCount(state, payload) {
-            state.count += 1 + payload;
+    }),
+    actions: {
+        addCount(payload) {
+            this.count += 1 + payload;
         },
-        updateWeather(state, payload) {
-            state.weatherData.icon = payload.weather[0].icon;
-            state.weatherData.temp = payload.main.temp;
-            state.weatherData.text = payload.weather[0].description;
-            state.weatherData.location = payload.sys.country;
-            state.weatherData.city = payload.name;
+        updateWeather(payload) {
+            this.weatherData.icon = payload.weather[0].icon;
+            this.weatherData.temp = payload.main.temp;
+            this.weatherData.text = payload.weather[0].description;
+            this.weatherData.location = payload.sys.country;
+            this.weatherData.city = payload.name;
         },
-        onSearchCity(state, payload) {
-            state.weatherData.city = payload.value;
+        onSearchCity(payload) {
+            this.weatherData.city = payload.value;
         },
         toggleButton(state) {
-            state.toggle = !state.toggle;
-        }
-    },
-    actions: {
-        getWeather(context) {
+            this.toggle = !this.toggle;
+        },
+        async getWeather() {
             const API_KEY = import.meta.env.VITE_API_KEY;
-            const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${context.state.weatherData.city}&APPID=${API_KEY}`
-            fetch(API_URL)
-                .then(res => res.json())
-                .then(data => {
-                    context.commit('updateWeather', data);
-                })
-                .catch(err => 
-                    console.error(err)
-                );
+            const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${this.weatherData.city}&APPID=${API_KEY}`
+            await fetch(API_URL)
+                    .then(res => res.json())
+                    .then(data => {
+                        //context.commit('updateWeather', data);
+                        this.updateWeather(data);
+                    })
+                    .catch(err => 
+                        console.error(err)
+                    );
         }
     }
 });

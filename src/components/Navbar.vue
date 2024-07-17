@@ -1,10 +1,13 @@
 <script setup>
+    import { useStore } from '../store/store.js';
+    import { storeToRefs } from 'pinia';
 
+    const store = useStore();
 </script>
 
 <template>
     <nav class="navbar">
-        <button class="toggle" @click="$store.commit('toggleButton')">
+        <button class="toggle" @click="store.toggleButton()">
             <font-awesome-icon class="icon" :icon="['fas', 'bars-staggered']"/>
         </button>
     </nav>

@@ -1,13 +1,13 @@
 <script setup>
     import { ref } from 'vue';
-    import { useStore } from 'vuex';
+    import { useStore } from '../store/store.js';
 
     const store = useStore();
     const inputText = ref("");
 
     const searchWeatherByCityName = () => {
-        store.commit('onSearchCity', inputText);
-        store.dispatch('getWeather');
+        store.onSearchCity(inputText);
+        store.getWeather();
     }
 </script>
 
